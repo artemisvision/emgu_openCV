@@ -106,8 +106,10 @@ namespace Emgu.CV.UI
 
             if ((selectedRectangle.Width / _zoomScale) > 2 && (selectedRectangle.Height / _zoomScale) > 2)
             {
-               int h = Math.Min(horizontalScrollBar.Maximum, horizontalScrollBar.Value + (int)(selectedRectangle.Location.X / _zoomScale));
-               int v = Math.Min(verticalScrollBar.Maximum, verticalScrollBar.Value + (int)(selectedRectangle.Location.Y / _zoomScale));
+               //int h = Math.Min(horizontalScrollBar.Maximum, horizontalScrollBar.Value + (int)(selectedRectangle.Location.X / _zoomScale));
+              // int v = Math.Min(verticalScrollBar.Maximum, verticalScrollBar.Value + (int)(selectedRectangle.Location.Y / _zoomScale));
+                int h = horizontalScrollBar.Value + (int)(selectedRectangle.Location.X / _zoomScale);
+                int v =  verticalScrollBar.Value + (int)(selectedRectangle.Location.Y / _zoomScale);
 
                _zoomScale = _zoomScale * size.Width / selectedRectangle.Width;
 
@@ -152,8 +154,14 @@ namespace Emgu.CV.UI
          }
          else
             return;
-
-         SetZoomScale(ZoomScale * scale, e.Location);
+         if (ZoomScale * scale > 1)
+         {
+             SetZoomScale(ZoomScale * scale, e.Location);
+         }
+         else if (ZoomScale > 1)
+         {
+             SetZoomScale(1, e.Location);
+         }
       }
 
       /// <summary>
@@ -225,11 +233,11 @@ namespace Emgu.CV.UI
 
          // If the image is wider than the PictureBox, show the HScrollBar.
          horizontalScrollBar.Visible =
-            (int)(Image.Size.Width * _zoomScale) > ClientSize.Width;
+            (int)(this.Size.Width * _zoomScale) > ClientSize.Width;
 
          // If the image is taller than the PictureBox, show the VScrollBar.
          verticalScrollBar.Visible =
-            (int)(Image.Size.Height * _zoomScale) > ClientSize.Height;
+            (int)(this.Size.Height * _zoomScale) > ClientSize.Height;
 
          #endregion
 
@@ -237,7 +245,7 @@ namespace Emgu.CV.UI
          if (horizontalScrollBar.Visible)
          {  // If the offset does not make the Maximum less than zero, set its value.            
             horizontalScrollBar.Maximum =
-               Image.Size.Width -
+                this.Size.Width -
                (int)(Math.Max(0, ClientSize.Width - (verticalScrollBar.Visible ? verticalScrollBar.Width : 0)) / _zoomScale);
          }
          else
@@ -250,7 +258,7 @@ namespace Emgu.CV.UI
          if (verticalScrollBar.Visible)
          {  // If the offset does not make the Maximum less than zero, set its value.            
             verticalScrollBar.Maximum =
-               Image.Size.Height -
+               this.Size.Height -
                (int)(Math.Max(0, ClientSize.Height - (horizontalScrollBar.Visible ? horizontalScrollBar.Height : 0)) / _zoomScale);
          }
          else
