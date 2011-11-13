@@ -31,7 +31,7 @@ namespace VideoSurveilance
       {
          try
          {
-            _cameraCapture = new Capture();
+            _cameraCapture = new Capture(@"C:\Users\Tom\Documents\Artemis\New Florence Wood Products\video_grab40.avi");
          }
          catch (Exception e)
          {

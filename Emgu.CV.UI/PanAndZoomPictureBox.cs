@@ -110,15 +110,32 @@ namespace Emgu.CV.UI
               // int v = Math.Min(verticalScrollBar.Maximum, verticalScrollBar.Value + (int)(selectedRectangle.Location.Y / _zoomScale));
                 int h = horizontalScrollBar.Value + (int)(selectedRectangle.Location.X / _zoomScale);
                 int v =  verticalScrollBar.Value + (int)(selectedRectangle.Location.Y / _zoomScale);
+             
+                    _zoomScale = _zoomScale * size.Width / selectedRectangle.Width;
 
-               _zoomScale = _zoomScale * size.Width / selectedRectangle.Width;
+                    SetScrollBarVisibilityAndMaxMin();
+                    if (h > horizontalScrollBar.Maximum) 
+                    {
+                        h=horizontalScrollBar.Maximum;
+                    }
+                if(h < horizontalScrollBar.Minimum)
+                {
+                    h=horizontalScrollBar.Minimum;
+                }
+                if(v > verticalScrollBar.Maximum)
+                {
+                    v=verticalScrollBar.Maximum;
+                }
+                if (v > verticalScrollBar.Minimum)
+                {
+                    v = verticalScrollBar.Maximum;
+                }
+                    
+                        horizontalScrollBar.Value = h;
+                        verticalScrollBar.Value = v;
 
-               SetScrollBarVisibilityAndMaxMin();
-
-               horizontalScrollBar.Value = h;
-               verticalScrollBar.Value = v;
-
-               Invalidate();
+                    Invalidate();
+               
             }
          }
          Cursor = _defaultCursor;
